@@ -7,6 +7,7 @@ import Menu from './pages/Menu'
 import SignUp from './pages/SignUp'
 import Login from './pages/Login'
 import Admin from './pages/Admin'
+import MenuContainer from './components/MenuContainer'
 const router = createBrowserRouter([
   {
     path: '/',
@@ -18,7 +19,33 @@ const router = createBrowserRouter([
       },
       {
         path: '/menu',
-        element: <Menu />
+        element: <Menu/>,
+        children: [
+          {
+            path: '/menu/vertodo',
+            element: <MenuContainer />
+          },
+          {
+            path: '/menu/bebidas',
+            element: <MenuContainer />
+          },
+          {
+            path: '/menu/brochetas',
+            element: <MenuContainer />
+          },
+          {
+            path: '/menu/bolasdefuego',
+            element: <MenuContainer />
+          },
+          {
+            path: '/menu/yakimeshi',
+            element: <MenuContainer />
+          },
+          {
+            path: '/menu/rollos',
+            element: <MenuContainer />
+          }
+        ]
       },
       {
         path: '/admin',
@@ -37,7 +64,7 @@ const router = createBrowserRouter([
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
+
     <RouterProvider router={router} />
-  </React.StrictMode>
+
 )

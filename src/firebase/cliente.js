@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app'
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
-import { getFirestore, where, addDoc, collection, getDocs, query, getDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore'
+import { getFirestore, updateDoc, where, addDoc, collection, getDocs, query, getDoc, doc, deleteDoc, arrayUnion } from 'firebase/firestore'
 import { getAuth, createUserWithEmailAndPassword, setPersistence, signInWithEmailAndPassword, browserSessionPersistence } from 'firebase/auth'
 
 export const firebaseConfig = {
@@ -129,7 +129,7 @@ export function createUser ({ name: nombres, lastNames: apellidos, email, passwo
     .then((userCredential) => {
       const userId = userCredential.user.uid
       const correo = userCredential.user.email
-      console.log('here1')
+
       addUser(userId, nombres, apellidos, correo)
       setPersistence(auth, browserSessionPersistence)
         .catch((error) => {
@@ -140,7 +140,6 @@ export function createUser ({ name: nombres, lastNames: apellidos, email, passwo
 }
 
 export async function addUser (userId, nombres, apellidos, correo, rol = 'cliente') {
-  console.log('here2')
   try {
     const docRef = await addDoc(collection(db, 'usuarios'), {
       userId,
@@ -154,6 +153,36 @@ export async function addUser (userId, nombres, apellidos, correo, rol = 'client
     console.error(error)
   }
 }
+
+export async function getCartByUser (uid) {
+  const q = query(collection(db, 'carritos'), where('usuario', '==', uid))
+  const querySnapshot = await getDocs(q)
+
+  return querySnapshot.empty
+    ? null
+    : [querySnapshot.docs[0].data(), querySnapshot.docs[0].id]
+}
+
+export async function createCartForUser (uid) {
+  const newCart = {
+    usuario: uid,
+    productos: [],
+    timestamp: Date()
+  }
+  const docRef = await addDoc(collection(db, 'carritos'), newCart)
+
+  return docRef
+}
+
+export async function addProductToCart (cartId, productId) {
+  const docRef = doc(db, 'carritos', cartId)
+  await updateDoc(docRef, {
+    productos: arrayUnion({ productId, cantidad: 1 })
+  })
+
+  return docRef
+}
+
 export async function getPersistanceId () {
   return auth.currentUser.uid
 }

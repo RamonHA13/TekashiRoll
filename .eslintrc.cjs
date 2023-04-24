@@ -19,7 +19,7 @@ module.exports = {
   rules: {
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',
-    'prefer-promise-reject-errors': 'off'
-
+    'prefer-promise-reject-errors': 'off',
+    'react/no-unknown-property': 'off'
   }
 }

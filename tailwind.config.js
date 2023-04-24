@@ -10,7 +10,8 @@ export default {
 
         'main-color': '#FBBF24',
         'second-color': '#9A3412',
-        'third-color': '#F59E0B'
+        'third-color': '#F59E0B',
+        'fourth-color': '#ec815c'
       }
     }
   },

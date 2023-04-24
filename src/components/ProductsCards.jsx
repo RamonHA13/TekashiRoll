@@ -10,7 +10,7 @@ export default function ProductsCards ({ id, data, handleEditProduct, handleDele
     <>
         <li className="bg-second-color h-[305px] rounded-xl shadow-lg shadow-second-color">
             <div className="overflow-hidden h-1/2">
-                <img src={data.imgUrl} alt="productImg" className="h-full w-full object-cover" />
+                <img src={data.imgUrl} alt="productImg" className="h-full w-full object-cover rounded-t-xl" />
             </div>
             <div className="p-2 ">
                 <h2 className="text-center text-lg text-white ">{data.nombre}</h2>

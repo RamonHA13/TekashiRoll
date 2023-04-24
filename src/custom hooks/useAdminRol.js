@@ -6,6 +6,7 @@ export default function useAdminRol () {
   const { user, logOut } = useAuth()
   const handleSignOff = async () => {
     await logOut()
+    location.reload()
   }
   const [isAdmin, setIsAdmin] = useState(false)
   const [showAdminHeader, setShowAdminHeader] = useState(false)

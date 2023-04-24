@@ -56,11 +56,12 @@ export default function Admin () {
           ? <> <AddProductCard handleAddProduct = {handleAddProduct} isEmpty={isEmpty} isEditing={isEditing} /></>
           : <main className='box-border overflow-auto p-10 h-screen'>
 
-            <ul className="  grid grid-cols-3  gap-5">
+            <ul className="  grid grid-cols-3 gap-5">
+            <AddProductCard handleAddProduct={handleAddProduct} isEmpty={isEmpty} isEditing={isEditing} />
               {productos.map((producto) => (
                 <ProductsCards key={producto.id} id={producto.id} data={producto.data} handleEditProduct={handleEditProduct} handleDeleteProduct={handleDeleteProduct}/>
               ))}
-              <AddProductCard handleAddProduct={handleAddProduct} isEmpty={isEmpty} isEditing={isEditing} />
+
             </ul>
 
         </main>
