@@ -4,6 +4,7 @@ import { IoMdClose } from 'react-icons/io'
 import Modal from './Modal'
 import { addOrder } from '../firebase/cliente'
 import { useNavigate } from 'react-router-dom'
+import { Timestamp } from 'firebase/firestore'
 
 export default function Payment () {
   const { carritoData, totalPedido, cartItems, handleDeleteCart } = useContext(CarritoContext)
@@ -40,7 +41,7 @@ export default function Payment () {
         productos: carritoData.productos
       },
       direccion: formData,
-      fecha: Date()
+      fecha: Timestamp.now()
     }
     e.preventDefault()
 

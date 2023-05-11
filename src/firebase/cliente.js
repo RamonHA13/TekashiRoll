@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app'
 import { getAnalytics } from 'firebase/analytics'
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
-import { getFirestore, updateDoc, where, addDoc, collection, getDocs, query, getDoc, doc, deleteDoc, arrayUnion, orderBy, startAt } from 'firebase/firestore'
+import { getFirestore, updateDoc, where, addDoc, collection, getDocs, query, getDoc, doc, deleteDoc, arrayUnion } from 'firebase/firestore'
 import { getAuth, createUserWithEmailAndPassword, setPersistence, signInWithEmailAndPassword, browserSessionPersistence } from 'firebase/auth'
 
 export const firebaseConfig = {
@@ -18,7 +18,7 @@ export const firebaseConfig = {
 export const app = initializeApp(firebaseConfig)
 export const analytics = getAnalytics(app)
 const auth = getAuth()
-const db = getFirestore(app)
+export const db = getFirestore(app)
 const storage = getStorage()
 
 export function getFirebaseAnalytics () {
@@ -214,35 +214,11 @@ export async function updateCartProductById (cartId, productId, newQuantity) {
   return newDocRef
 }
 
-export async function updateOrderById (orderId) {
+export async function updateOrderById (orderId, data) {
   try {
     const docRef = doc(db, 'ordenes', orderId)
-    const ordenDoc = await updateDoc(docRef, { completado: true })
+    const ordenDoc = await updateDoc(docRef, data)
     return ordenDoc
-  } catch (e) {
-    console.log(e)
-  }
-}
-export async function getOrders (fecha) {
-  try {
-    const q = query(collection(db, 'ordenes'),
-      orderBy('fecha'),
-      startAt(fecha),
-      where('completado', '==', false)
-    )
-    const querySnapshot = await getDocs(q)
-
-    const ordenes = []
-    querySnapshot.forEach(doc => ordenes.push({
-      id: doc.id,
-      domicilio: JSON.parse(doc.data().domicilio),
-      fecha: doc.data().fecha,
-      orden: JSON.parse(doc.data().orden),
-      enPreparacion: false,
-      enviado: false,
-      completado: false
-    }))
-    return ordenes
   } catch (e) {
     console.log(e)
   }
@@ -253,7 +229,9 @@ export async function addOrder (pedidoData) {
       domicilio: JSON.stringify(pedidoData.direccion),
       orden: JSON.stringify(pedidoData.pedido),
       fecha: pedidoData.fecha,
-      completado: false
+      completado: false,
+      enviado: false,
+      enPreparacion: false
     })
     return docRef
   } catch (e) {
