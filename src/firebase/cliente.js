@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app'
+import { getAnalytics } from 'firebase/analytics'
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
-import { getFirestore, updateDoc, where, addDoc, collection, getDocs, query, getDoc, doc, deleteDoc, arrayUnion } from 'firebase/firestore'
+import { getFirestore, updateDoc, where, addDoc, collection, getDocs, query, getDoc, doc, deleteDoc, arrayUnion, orderBy, startAt } from 'firebase/firestore'
 import { getAuth, createUserWithEmailAndPassword, setPersistence, signInWithEmailAndPassword, browserSessionPersistence } from 'firebase/auth'
 
 export const firebaseConfig = {
@@ -15,10 +16,14 @@ export const firebaseConfig = {
 }
 
 export const app = initializeApp(firebaseConfig)
+export const analytics = getAnalytics(app)
 const auth = getAuth()
 const db = getFirestore(app)
 const storage = getStorage()
 
+export function getFirebaseAnalytics () {
+  return analytics
+}
 export function userLogin ({ email, password }) {
   setPersistence(auth, browserSessionPersistence)
     .then(() => {
@@ -173,11 +178,92 @@ export async function createCartForUser (uid) {
 
   return docRef
 }
+export async function deleteCartById (cartId) {
+  try {
+    const ref = await deleteDoc(doc(db, 'carritos', cartId))
+    return (ref)
+  } catch (e) {
+    console.error(e)
+  }
+}
+export async function deleteCartProductById (cartId, productId) {
+  const docRef = doc(db, 'carritos', cartId)
 
-export async function addProductToCart (cartId, productId) {
+  const cartDoc = await getDoc(docRef)
+  const productos = cartDoc.data().productos
+  const productosActualizados = productos.filter(producto => producto.productId !== productId)
+  const newDocRef = await updateDoc(docRef, { productos: productosActualizados })
+  return newDocRef
+}
+
+export async function updateCartProductById (cartId, productId, newQuantity) {
+  const cartRef = doc(db, 'carritos', cartId)
+
+  const cartDoc = await getDoc(cartRef)
+  const productos = cartDoc.data().productos
+  const updatedProductos = productos.map(producto => {
+    if (producto.productId === productId) {
+      const newPrecio = Number(producto.precio) * Number(newQuantity)
+
+      return { ...producto, cantidad: newQuantity, total: newPrecio }
+    }
+    return producto
+  })
+
+  const newDocRef = await updateDoc(cartRef, { productos: updatedProductos })
+  return newDocRef
+}
+
+export async function updateOrderById (orderId) {
+  try {
+    const docRef = doc(db, 'ordenes', orderId)
+    const ordenDoc = await updateDoc(docRef, { completado: true })
+    return ordenDoc
+  } catch (e) {
+    console.log(e)
+  }
+}
+export async function getOrders (fecha) {
+  try {
+    const q = query(collection(db, 'ordenes'),
+      orderBy('fecha'),
+      startAt(fecha),
+      where('completado', '==', false)
+    )
+    const querySnapshot = await getDocs(q)
+
+    const ordenes = []
+    querySnapshot.forEach(doc => ordenes.push({
+      id: doc.id,
+      domicilio: JSON.parse(doc.data().domicilio),
+      fecha: doc.data().fecha,
+      orden: JSON.parse(doc.data().orden),
+      enPreparacion: false,
+      enviado: false,
+      completado: false
+    }))
+    return ordenes
+  } catch (e) {
+    console.log(e)
+  }
+}
+export async function addOrder (pedidoData) {
+  try {
+    const docRef = await addDoc(collection(db, 'ordenes'), {
+      domicilio: JSON.stringify(pedidoData.direccion),
+      orden: JSON.stringify(pedidoData.pedido),
+      fecha: pedidoData.fecha,
+      completado: false
+    })
+    return docRef
+  } catch (e) {
+    console.error(e)
+  }
+}
+export async function addProductToCart (cartId, productId, productPrecio) {
   const docRef = doc(db, 'carritos', cartId)
   await updateDoc(docRef, {
-    productos: arrayUnion({ productId, cantidad: 1 })
+    productos: arrayUnion({ productId, cantidad: 1, precio: productPrecio })
   })
 
   return docRef

@@ -6,6 +6,7 @@ import { Outlet, useLocation } from 'react-router-dom'
 import useAdminRol from './custom hooks/useAdminRol'
 import { useState, useEffect } from 'react'
 import { createCartForUser, getCartByUser } from './firebase/cliente'
+import { CarritoProvider } from './context/CarritoContext'
 
 function App () {
   const { user, isAdmin, handleSignOff, handleShowAdminHeader, showAdminHeader } = useAdminRol()
@@ -27,21 +28,20 @@ function App () {
     } else {
       setIsMenuPath(false)
     }
-    if (location.pathname === '/admin') {
+    if (location.pathname.startsWith('/admin')) {
       setShowFooter(false)
     } else {
       setShowFooter(true)
     }
   }, [location.pathname])
-
   return (
-    <>
-      <Header user={user} isAdmin={isAdmin} handleSignOff={handleSignOff} handleShowAdminHeader={handleShowAdminHeader} showAdminHeader={showAdminHeader} isMenuPath={isMenuPath}/>
+    <CarritoProvider>
         <>
+          <Header user={user} isAdmin={isAdmin} handleSignOff={handleSignOff} handleShowAdminHeader={handleShowAdminHeader} showAdminHeader={showAdminHeader} isMenuPath={isMenuPath} />
           <Outlet />
+          {showFooter && <Footer />}
         </>
-      {showFooter && <Footer />}
-    </>
+    </CarritoProvider>
   )
 }
 

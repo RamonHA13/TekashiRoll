@@ -70,7 +70,7 @@ export default function SignUp () {
                     {!isValid && <span className='text-yellow-300'>Contraseña incorrecta!!!</span>}
                     <input type="submit" value="Continue" className="mt-5 hover:cursor-pointer" />
                 </form>
-                {showModal ? <Modal /> : null }
+                {showModal ? <Modal mensaje={'Usuario registrado exitosamente'} icon={'success'}/> : null }
 
             </div>
         </div>

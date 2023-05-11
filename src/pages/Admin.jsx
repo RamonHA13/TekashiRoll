@@ -1,75 +1,28 @@
 
-import AddProductCard from '../components/addProductCard'
-import { getProductos, deleteProductById } from '../firebase/cliente'
-import FormModal from '../components/formModal'
-import ProductsCards from '../components/ProductsCards'
-import { useEffect, useState } from 'react'
-import DeleteModal from '../components/deleteModal'
+import { useState, useEffect } from 'react'
+
 import useAdminRol from '../custom hooks/useAdminRol'
+import { Outlet, useLocation } from 'react-router-dom'
+
 export default function Admin () {
-  const [showModal, setShowModal] = useState(false)
-  const [isEmpty, setIsEmpty] = useState()
-  const [productos, setProductos] = useState([])
-  const [isEditing, setIsEditing] = useState(false)
-  const [productId, setProductId] = useState(null)
-  const [showDeleteModal, setShowDeleteModal] = useState(false)
   const { isAdmin } = useAdminRol()
+  const locationHook = useLocation()
+  const [location, setLocation] = useState('/admin')
+
   useEffect(() => {
-    getProductos().then(productos => {
-      if (productos.length > 0) {
-        setProductos(productos)
-        setIsEmpty(false)
-      } else {
-        setIsEmpty(true)
-      }
-    })
-  }, [showModal, showDeleteModal])
-
-  const handleContinueDelete = () => {
-    deleteProductById(productId)
-    setShowDeleteModal(false)
-  }
-  const handleCloseModal = () => {
-    setIsEditing(false)
-    setShowModal(false)
-  }
-  const handleAddProduct = () => {
-    setShowModal(true)
-  }
-
-  const handleDeleteProduct = (id) => {
-    setProductId(id)
-    setShowDeleteModal(true)
-  }
-  const handleEditProduct = (id) => {
-    setProductId(id)
-    setIsEditing(true)
-    setShowModal(true)
-  }
+    if (locationHook.pathname === '/admin') {
+      setLocation(locationHook.pathname)
+    }
+    if (locationHook.pathname === '/admin/statistics') {
+      setLocation(locationHook.pathname)
+    }
+  }, [locationHook.pathname])
   return (
     <>
-    { !isAdmin
-      ? <h1>No cuenta con permisos de administrador</h1>
-      : <>
-
-        {isEmpty
-          ? <> <AddProductCard handleAddProduct = {handleAddProduct} isEmpty={isEmpty} isEditing={isEditing} /></>
-          : <main className='box-border overflow-auto p-10 h-screen'>
-
-            <ul className="  grid grid-cols-3 gap-5">
-            <AddProductCard handleAddProduct={handleAddProduct} isEmpty={isEmpty} isEditing={isEditing} />
-              {productos.map((producto) => (
-                <ProductsCards key={producto.id} id={producto.id} data={producto.data} handleEditProduct={handleEditProduct} handleDeleteProduct={handleDeleteProduct}/>
-              ))}
-
-            </ul>
-
-        </main>
-        }
-        {showDeleteModal && <DeleteModal handleCloseDeleteModal = {() => setShowDeleteModal(false)} handleContinueDelete = {handleContinueDelete}/>}
-        {showModal && <FormModal isEditing={isEditing} handleCloseModal = {handleCloseModal} id={productId}/>}
-    </>
-    }
+      { !isAdmin
+        ? <h1>No cuenta con permisos de administrador</h1>
+        : location === '/admin' ? <h2>Vista de administrador</h2> : <Outlet />
+      }
     </>
 
   )

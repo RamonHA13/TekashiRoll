@@ -8,6 +8,10 @@ import SignUp from './pages/SignUp'
 import Login from './pages/Login'
 import Admin from './pages/Admin'
 import MenuContainer from './components/MenuContainer'
+import Payment from './components/Payments'
+import AdminProducts from './components/AdminProducts'
+import AdminStatistics from './components/AdminStatistics'
+import AdminOrders from './components/AdminOrders'
 const router = createBrowserRouter([
   {
     path: '/',
@@ -48,8 +52,31 @@ const router = createBrowserRouter([
         ]
       },
       {
+        path: '/payment',
+        element: <Payment />
+      },
+
+      {
         path: '/admin',
-        element: <Admin />
+        element: <Admin />,
+        children: [
+          {
+            path: '/admin',
+            element: <Admin />
+          },
+          {
+            path: '/admin/products',
+            element: <AdminProducts />
+          },
+          {
+            path: '/admin/statistics',
+            element: <AdminStatistics />
+          },
+          {
+            path: '/admin/orders',
+            element: <AdminOrders />
+          }
+        ]
       }
     ]
   },

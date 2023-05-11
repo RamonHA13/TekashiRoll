@@ -2,4 +2,8 @@
 
 ## To do:
 * Manejar Errores
-* Añadir todos los productos
+* Hacer pedidos 
+* Eliminar productos del carrito 
+* Hacer interfaz para ver los pedidos 
+* Mostrar Pasarela de pago
+
