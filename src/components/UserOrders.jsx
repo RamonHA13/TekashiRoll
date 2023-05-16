@@ -3,11 +3,12 @@ import { useEffect, useState, useContext, useRef } from 'react'
 import { CarritoContext } from '../context/CarritoContext'
 import { db } from '../firebase/cliente'
 import { query, where, collection, onSnapshot } from 'firebase/firestore'
-
+import Modal from './Modal'
 export default function UserOrders () {
   const [userOrdenes, setUserOrdenes] = useState([])
   const subscriptionRef = useRef(null)
   const { userId } = useContext(CarritoContext)
+  const [showModal, setShowModal] = useState(false)
 
   useEffect(() => {
     if (userId) {
@@ -45,7 +46,6 @@ export default function UserOrders () {
 
   return (
     <>
-
         <h2 className='text-2xl text-center font-bold mt-5'>Ordenes</h2>
         <ul className="flex flex-col overflow-x-hidden justify-center ">
             {console.log(userOrdenes)}
@@ -73,7 +73,8 @@ export default function UserOrders () {
                         </div>
                     </div>
 
-                    <button className="mt-2 p-2 bg-main-color hover:bg-third-color rounded-md" onClick={() => alert('productos de la orden')}>Ver productos de la orden</button>
+                    <button className="mt-2 p-2 bg-main-color hover:bg-third-color rounded-md" onClick={() => setShowModal(!showModal)}>Ver productos de la orden</button>
+                    {showModal && <Modal data={orden} mensaje={'Productos'} showButtons={true} handleCloseModal={() => setShowModal(false)}/>}
                  </li>
 
                 )
@@ -85,6 +86,7 @@ export default function UserOrders () {
                 </div>
               : null}
         </ul>
+
     </>
   )
 }

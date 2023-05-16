@@ -2,12 +2,13 @@ import { useEffect, useState, useRef } from 'react'
 
 import { updateOrderById, db } from '../firebase/cliente'
 import { query, orderBy, where, collection, onSnapshot, Timestamp } from 'firebase/firestore'
-
+import Modal from './Modal'
 import { TbAlertCircle } from 'react-icons/tb'
 
 export default function AdminOrders () {
   const [ordenes, setOrdenes] = useState([])
   const [togglePedidos, setTogglePedidos] = useState(false)
+  const [showModal, setShowModal] = useState(false)
   const subscriptionRef = useRef(null)
   const handleCompletado = (ordenId) => {
     updateOrderById(ordenId, { completado: true, entrega: Timestamp.now() })
@@ -97,9 +98,9 @@ export default function AdminOrders () {
                         </div>
                     </div>
 
-                    <button className="mt-2 p-2 bg-main-color hover:bg-third-color rounded-md" onClick={() => alert('productos de la orden')}>Ver productos de la orden</button>
+                    <button className="mt-2 p-2 bg-main-color hover:bg-third-color rounded-md" onClick={() => setShowModal(true)}>Ver productos de la orden</button>
+                    {showModal && <Modal data={orden} mensaje={'Productos'} showButtons={true} handleCloseModal={() => setShowModal(false)}/>}
                  </li>
-
                 )
               })}
             {typeof (ordenes) === 'undefined' || ordenes.length === 0
@@ -109,6 +110,7 @@ export default function AdminOrders () {
                 </div>
               : null}
         </ul>
+
     </div>
   )
 }
