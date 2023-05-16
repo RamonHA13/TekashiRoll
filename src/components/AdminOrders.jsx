@@ -10,7 +10,7 @@ export default function AdminOrders () {
   const [togglePedidos, setTogglePedidos] = useState(false)
   const subscriptionRef = useRef(null)
   const handleCompletado = (ordenId) => {
-    updateOrderById(ordenId, { completado: true, fecha: Timestamp.now() })
+    updateOrderById(ordenId, { completado: true, entrega: Timestamp.now() })
     setTogglePedidos(!togglePedidos)
   }
 

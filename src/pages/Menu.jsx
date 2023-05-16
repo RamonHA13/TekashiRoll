@@ -6,7 +6,7 @@ import { useLocation } from 'react-router-dom'
 import useProductos from '../custom hooks/useProductos'
 import MenuProductsCards from '../components/MenuProductsCards'
 
-export default function Menu ({ handleCartProducts }) {
+export default function Menu () {
   const [productos] = useProductos()
   const [bebidas, setBebidas] = useState(null)
   const [brochetas, setBrochetas] = useState(null)
@@ -113,7 +113,7 @@ export default function Menu ({ handleCartProducts }) {
               : null}
             {location === '/menu/bebidas'
               ? <MenuContainer grid={true}>
-                  {bebidas && bebidas.map((bebida) => <MenuProductsCards handleCartProducts={handleCartProducts} key={bebida.id} producto = {bebida}/>)}
+                  {bebidas && bebidas.map((bebida) => <MenuProductsCards key={bebida.id} producto = {bebida}/>)}
                 </MenuContainer>
               : null}
             {location === '/menu/brochetas'

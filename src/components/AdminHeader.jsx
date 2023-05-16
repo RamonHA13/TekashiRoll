@@ -15,8 +15,11 @@ export default function AdminHeader () {
         <Link to="/admin/products" className="text-white mr-5 hover:text-main-color">
           Productos
         </Link>
-        <Link to="/admin/orders" className="text-white mr-20 hover:text-main-color">
+        <Link to="/admin/orders" className="text-white mr-5 hover:text-main-color">
           Ordenes
+        </Link>
+        <Link to="/admin" className="text-white mr-20 hover:text-main-color">
+          Inicio
         </Link>
       </div>
     </header>

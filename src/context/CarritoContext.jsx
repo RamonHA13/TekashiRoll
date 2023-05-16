@@ -21,8 +21,10 @@ export const CarritoProvider = ({ children }) => {
     setIsCarritoDataUpdated(!isCarritoDataUpdated)
   }
   const handleCartProducts = ({ producto }) => {
+    console.log(producto)
     getCartByUser(userId)
       .then((cart) => {
+        console.log(cart)
         if (cart) {
           setIsCarritoDataUpdated(!isCarritoDataUpdated)
           return addProductToCart(cart[1], producto.id, producto.data.precio)
@@ -81,7 +83,7 @@ export const CarritoProvider = ({ children }) => {
     setIsCarritoDataUpdated(true)
     setCarritoData({})
   }
-  return (<CarritoContext.Provider value={{ handleDeleteCart, setIsCarritoDataUpdated, handleCartProducts, cartItems, carritoData, handleDeleteCartProduct, totalPedido, cantidadProductos, handleProductsQuantity }}>
+  return (<CarritoContext.Provider value={{ handleDeleteCart, setIsCarritoDataUpdated, handleCartProducts, cartItems, carritoData, handleDeleteCartProduct, totalPedido, cantidadProductos, handleProductsQuantity, userId }}>
             {children}
         </CarritoContext.Provider>)
 }

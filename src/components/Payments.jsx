@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { Timestamp } from 'firebase/firestore'
 
 export default function Payment () {
-  const { carritoData, totalPedido, cartItems, handleDeleteCart } = useContext(CarritoContext)
+  const { carritoData, totalPedido, cartItems, handleDeleteCart, userId } = useContext(CarritoContext)
   const [showModal, setShowModal] = useState(false)
   const [showForm, setShowForm] = useState(false)
   const [showSuccessModal, setSuccessModal] = useState(false)
@@ -36,6 +36,7 @@ export default function Payment () {
 
   const handleFormSubmit = (e) => {
     const pedidoData = {
+      usuario: userId,
       pedido: {
         totalPedido,
         productos: carritoData.productos

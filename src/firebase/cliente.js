@@ -34,6 +34,22 @@ export function userLogin ({ email, password }) {
     })
 }
 
+export async function findProductByName (name) {
+  try {
+    const productsRef = collection(db, 'productos') // Reemplaza 'productos' con el nombre de tu colección en Firestore
+    const q = query(productsRef, where('nombre', '>=', name), where('nombre', '<=', name + '\uf8ff'))
+
+    const querySnapshot = await getDocs(q)
+    const results = []
+
+    querySnapshot.forEach(doc => results.push({ id: doc.id, data: doc.data() }))
+
+    return results
+  } catch (error) {
+    console.error('Error al realizar la búsqueda:', error)
+    throw error
+  }
+}
 export async function uploadProductImage (file, nombre) {
   const storageRef = ref(storage, 'productos/' + nombre)
 
@@ -226,6 +242,7 @@ export async function updateOrderById (orderId, data) {
 export async function addOrder (pedidoData) {
   try {
     const docRef = await addDoc(collection(db, 'ordenes'), {
+      usuario: pedidoData.usuario,
       domicilio: JSON.stringify(pedidoData.direccion),
       orden: JSON.stringify(pedidoData.pedido),
       fecha: pedidoData.fecha,

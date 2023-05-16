@@ -12,6 +12,7 @@ import Payment from './components/Payments'
 import AdminProducts from './components/AdminProducts'
 import AdminStatistics from './components/AdminStatistics'
 import AdminOrders from './components/AdminOrders'
+import UserPage from './pages/UserPage'
 const router = createBrowserRouter([
   {
     path: '/',
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <MainPage />
+      },
+      {
+        path: '/user',
+        element: <UserPage />
       },
       {
         path: '/menu',
