@@ -47,7 +47,8 @@ export default function AdminOrders () {
           orden: JSON.parse(doc.data().orden),
           enPreparacion: doc.data().enPreparacion,
           enviado: doc.data().enviado,
-          completado: doc.data().completado
+          completado: doc.data().completado,
+          tipoPago: doc.data().tipoPago
         })
       })
       setOrdenes(ordenes)
@@ -84,11 +85,11 @@ export default function AdminOrders () {
                 return (
                 <li key={orden.id} className="w-full my-3 ml-5 bg-main-color/[.5] rounded p-3">
                     <h3>{orden.id}</h3>
-                    <div className='flex justif
-                    y-between'>
+                    <div className='flex justify-between'>
                         <div>
                             <p>Dirección: {fullDirection}</p>
                             <p>Hora del pedido: {horaPedido}</p>
+                            <p>Metodo de pago: {orden.tipoPago}</p>
                         </div>
 
                         <div className='mr-10'>

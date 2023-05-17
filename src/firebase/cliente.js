@@ -248,7 +248,8 @@ export async function addOrder (pedidoData) {
       fecha: pedidoData.fecha,
       completado: false,
       enviado: false,
-      enPreparacion: false
+      enPreparacion: false,
+      tipoPago: pedidoData.tipoPago
     })
     return docRef
   } catch (e) {

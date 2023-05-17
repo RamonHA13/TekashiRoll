@@ -47,8 +47,8 @@ export default function UserOrders () {
   return (
     <>
         <h2 className='text-2xl text-center font-bold mt-5'>Ordenes</h2>
-        <ul className="flex flex-col overflow-x-hidden justify-center ">
-            {console.log(userOrdenes)}
+        <ul className="flex flex-col overflow-x-hidden overflow-y-auto justify-center ">
+
             {userOrdenes &&
               userOrdenes.map((orden) => {
                 const horaPedido = orden.fecha.toDate().toString().split(' ')[4]

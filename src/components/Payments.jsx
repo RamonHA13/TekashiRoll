@@ -42,7 +42,8 @@ export default function Payment () {
         productos: carritoData.productos
       },
       direccion: formData,
-      fecha: Timestamp.now()
+      fecha: Timestamp.now(),
+      tipoPago: 'efectivo'
     }
     e.preventDefault()
 
