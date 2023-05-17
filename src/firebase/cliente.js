@@ -3,17 +3,7 @@ import { getAnalytics } from 'firebase/analytics'
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 import { getFirestore, updateDoc, where, addDoc, collection, getDocs, query, getDoc, doc, deleteDoc, arrayUnion } from 'firebase/firestore'
 import { getAuth, createUserWithEmailAndPassword, setPersistence, signInWithEmailAndPassword, browserSessionPersistence } from 'firebase/auth'
-
-export const firebaseConfig = {
-  apiKey: 'AIzaSyB0htp67z_v0chFqQsigjMHSCmEsjzhjlU',
-  authDomain: 'sushiroll-69aa2.firebaseapp.com',
-  projectId: 'sushiroll-69aa2',
-  storageBucket: 'sushiroll-69aa2.appspot.com',
-  messagingSenderId: '357418357015',
-  appId: '1:357418357015:web:94f5a7254dd5f437bee752',
-  measurementId: 'G-42YB25443M'
-
-}
+import { firebaseConfig } from '../config'
 
 export const app = initializeApp(firebaseConfig)
 export const analytics = getAnalytics(app)
